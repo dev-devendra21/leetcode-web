@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model User {
+  id String @id @default(cuid())
+  clerkId String @unique
+  username String? @unique
+  email  String @unique
+  role  UserRole  @default(USER)
+  problem Problem[]
+
+  firstName String? @map("first_name")
+  lastName String?  @map("last_name")
+  imageUrl String?  @map("image_url")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+
+
+model Problem {
+  id          String     @id @default(cuid())
+  //  basic info
+  title       String
+  description String
+  difficulty  Difficulty
+  tags        String[]
+  examples    Json
+  constraints String
+  hints       String?
+  editorial   String?
+
+  testCases          Json
+  codeSnippets       Json
+  referenceSolutions Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
