@@ -32,12 +32,12 @@ model User {
   problem Problem[]
   solvedProblems ProblemSolved[]
   submissions Submission[]
+  playlists Playlist[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
 
-  playlists Playlist[]
 }
 
 
@@ -66,8 +66,6 @@ model Problem {
 
   solvedBy          ProblemSolved[]
   submissions Submission[]
-
-
   problemInPlaylists ProblemInPlaylist[]
 }
 

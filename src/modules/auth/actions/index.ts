@@ -1,11 +1,11 @@
 "use server";
-
 import { prisma } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 
 export const onBoardUser = async () => {
   try {
     const user = await currentUser();
+
     if (!user) {
       return { success: false, error: "No authenticated user found" };
     }
@@ -38,11 +38,13 @@ export const onBoardUser = async () => {
 export const currentUserRole = async () => {
   try {
     const user = await currentUser();
+
     if (!user) {
       return { success: false, error: "No authenticated user found" };
     }
 
     const { id } = user;
+
     const userRole = await prisma.user.findUnique({
       where: {
         clerkId: id,
@@ -51,6 +53,7 @@ export const currentUserRole = async () => {
         role: true,
       },
     });
+
     return userRole?.role;
   } catch (error) {
     console.log(error);
@@ -63,14 +66,17 @@ export const getCurrentUserData = async () => {
     if (!user) {
       return { success: false, error: "No authenticated user found" };
     }
-    const { id } = user;
     const data = await prisma.user.findUnique({
       where: {
-        clerkId: id,
+        clerkId: user.id,
+      },
+      include: {
+        submissions: true,
+        solvedProblems: true,
+        playlists: true,
       },
     });
+
     return data;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };

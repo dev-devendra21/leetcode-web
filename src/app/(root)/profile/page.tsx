@@ -14,7 +14,7 @@ const ProfilePage = async () => {
         <UserInfoCard userData={profileData} />
 
         <ProfileStats
-          submissions={profileData?.submissions}
+          submissions={profileData?.submissions.length}
           solvedCount={profileData?.solvedProblems.length}
           playlistCount={profileData?.playlists.length}
         />
