@@ -10,16 +10,25 @@ export function getJudge0LanguageId(language: string) {
   return languageMap[language.toUpperCase() as keyof typeof languageMap];
 }
 
+export function getLanguageName(languageId: number) {
+  const LANGUAGE_NAMES = {
+    97: "JavaScript",
+    71: "Python",
+    62: "Java",
+  };
+  return LANGUAGE_NAMES[languageId as keyof typeof LANGUAGE_NAMES] || "Unknown";
+}
+
 export async function submitBatch(submissions: any) {
   const options = {
     method: "POST",
-    url: "https://judge0-extra-ce1.p.rapidapi.com/submissions/batch",
+    url: "https://judge029.p.rapidapi.com/submissions/batch",
     params: {
       base64_encoded: "false",
     },
     headers: {
-      "x-rapidapi-key": "06175f86cemsh47004bb1ae1d17bp1d6662jsn3ea9c5ef4c63",
-      "x-rapidapi-host": "judge0-extra-ce1.p.rapidapi.com",
+      "x-rapidapi-key": process.env.X_RAPIDAPI_KEY,
+      "x-rapidapi-host": process.env.X_RAPIDAPI_HOST,
       "Content-Type": "application/json",
     },
     data: {
@@ -35,15 +44,15 @@ export async function pollBatchResults(tokens: string[]) {
   while (true) {
     const options = {
       method: "GET",
-      url: "https://judge0-extra-ce1.p.rapidapi.com/submissions/batch",
+      url: "https://judge029.p.rapidapi.com/submissions/batch",
       params: {
         tokens: tokens.join(","),
         base64_encoded: "true",
         fields: "*",
       },
       headers: {
-        "x-rapidapi-key": "06175f86cemsh47004bb1ae1d17bp1d6662jsn3ea9c5ef4c63",
-        "x-rapidapi-host": "judge0-extra-ce1.p.rapidapi.com",
+        "x-rapidapi-key": process.env.X_RAPIDAPI_KEY,
+        "x-rapidapi-host": process.env.X_RAPIDAPI_HOST,
         "Content-Type": "application/json",
       },
     };
